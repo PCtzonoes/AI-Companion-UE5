@@ -14,6 +14,3 @@ class AcompanionGameMode : public AGameModeBase
 public:
 	AcompanionGameMode();
 };
-
-
-
