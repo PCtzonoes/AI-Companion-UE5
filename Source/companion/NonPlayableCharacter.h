@@ -12,7 +12,7 @@ class COMPANION_API ANonPlayableCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "AI", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;
 
 public:
