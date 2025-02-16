@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "companionCharacter.generated.h"
 
+class UAIPerceptionStimuliSourceComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -44,6 +45,9 @@ class AcompanionCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
+	UAIPerceptionStimuliSourceComponent* StimuliSource;
+	
 public:
 	AcompanionCharacter();
 

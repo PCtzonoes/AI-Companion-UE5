@@ -14,6 +14,8 @@ class COMPANION_API ANonPlayableCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
+	UAIPerceptionStimuliSourceComponent* StimuliSource;
 
 public:
 	// Sets default values for this character's properties
