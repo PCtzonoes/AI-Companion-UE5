@@ -24,11 +24,13 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void Attack();
 };

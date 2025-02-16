@@ -32,3 +32,8 @@ void ANonPlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 }
 
+void ANonPlayableCharacter::Attack()
+{
+	
+}
+
