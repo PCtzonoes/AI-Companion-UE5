@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "GetPlayerLocation.generated.h"
+#include "AttackTarget.generated.h"
 
 /**
- * Assumes that it is a single player game and gets the player location
+ * 
  */
 UCLASS()
-class COMPANION_API UGetPlayerLocation : public UBTTask_BlackboardBase
+class COMPANION_API UAttackTarget : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
 public:
-	UGetPlayerLocation()
+	UAttackTarget()
 	{
-		NodeName = TEXT("Get Player Location");
+		NodeName = TEXT("Attack Target");
 	}
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;

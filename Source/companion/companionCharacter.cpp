@@ -10,6 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -53,6 +56,11 @@ AcompanionCharacter::AcompanionCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSource"));
+	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSource->RegisterForSense(UAISense_Hearing::StaticClass());
+	StimuliSource->RegisterWithPerceptionSystem();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,6 +95,9 @@ void AcompanionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AcompanionCharacter::Look);
+
+		EnhancedInputComponent->BindAction(SwitchAttackAction, ETriggerEvent::Triggered, this,
+		                                   &AcompanionCharacter::SwitchAttack);
 	}
 	else
 	{
@@ -95,6 +106,15 @@ void AcompanionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 			       "'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."
 		       ), *GetNameSafe(this));
 	}
+}
+
+void AcompanionCharacter::SwitchAttack()
+{
+	OnSwitchAttack.Broadcast();
+}
+
+void AcompanionCharacter::Attack(UAttackInfo* AttackInfo)
+{
 }
 
 void AcompanionCharacter::Move(const FInputActionValue& Value)

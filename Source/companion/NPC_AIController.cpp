@@ -3,6 +3,7 @@
 
 #include "NPC_AIController.h"
 
+#include "AttackInfo.h"
 #include "NonPlayableCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -17,7 +18,10 @@ void ANPC_AIController::OnPossess(APawn* InPawn)
 	{
 		if (auto const BehaviorTree = NPC->GetBehaviorTree())
 		{
+			auto Attacks = NPC->GetAttacks();
 			RunBehaviorTree(BehaviorTree);
+			Blackboard = GetBlackboardComponent();
+			Blackboard->SetValueAsObject("CurrentAttack", Attacks[0]);
 		}
 	}
 }
@@ -50,6 +54,11 @@ void ANPC_AIController::OnTargetAcquired(APawn* TargetPawn)
 		UE_LOG(LogTemp, Error, TEXT("No Target Pawn"));
 		return;
 	}
+
+	if (ICombat::IsFriendly(GetPawn(), TargetPawn))
+		return;
+
+
 	UE_LOG(LogTemp, Verbose, TEXT("%s - target Acquired: %s"), *GetPawn()->GetName(), *TargetPawn->GetName());
 
 	// Initialize threat level with a starting value
@@ -79,7 +88,9 @@ void ANPC_AIController::UpdateThreatBasedOnDamage(APawn* OriginPawn, const float
 	if (ThreatMap.Contains(OriginPawn))
 		ThreatMap[OriginPawn].DamageThreat += Damage;
 	else
+	{
 		ThreatMap.Add(OriginPawn, FThreatValues(0, 2 * Damage));
+	}
 }
 
 void ANPC_AIController::StartCombat()

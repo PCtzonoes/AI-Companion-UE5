@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "NPC_AIController.generated.h"
 
+class UAttackInfo;
+
 USTRUCT(BlueprintType)
 struct FThreatValues
 {
@@ -20,7 +22,10 @@ struct FThreatValues
 	float GetTotalThreat() const;
 
 	FThreatValues() = default;
-	FThreatValues(float Proximity, float Damage) : ProximityThreat(Proximity), DamageThreat(Damage) {}
+
+	FThreatValues(float Proximity, float Damage) : ProximityThreat(Proximity), DamageThreat(Damage)
+	{
+	}
 };
 
 inline float FThreatValues::GetTotalThreat() const
@@ -40,6 +45,7 @@ class COMPANION_API ANPC_AIController : public AAIController
 	TMap<APawn*, FThreatValues> ThreatMap;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	class UAISenseConfig_Sight* SightConfig;
+
 
 	FTimerHandle CombatTimerHandle;
 
