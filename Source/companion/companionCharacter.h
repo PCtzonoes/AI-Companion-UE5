@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Combat.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "companionCharacter.generated.h"
@@ -17,7 +18,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AcompanionCharacter : public ACharacter
+class AcompanionCharacter : public ACharacter, public ICombat
 {
 	GENERATED_BODY()
 
@@ -47,7 +48,13 @@ class AcompanionCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	UAIPerceptionStimuliSourceComponent* StimuliSource;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
+	float Life = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
+	int32 TeamID = 0;
+
 public:
 	AcompanionCharacter();
 
@@ -67,4 +74,9 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	
+	virtual int32 GetTeamID() const override { return TeamID; }
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	virtual void Attack(UAttackInfo* AttackInfo) override;
 };

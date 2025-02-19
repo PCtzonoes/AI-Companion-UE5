@@ -3,6 +3,8 @@
 
 #include "NonPlayableCharacter.h"
 
+#include "AttackInfo.h"
+#include "NPC_AIController.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AISense_Sight.h"
@@ -37,6 +39,30 @@ void ANonPlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ANonPlayableCharacter::Attack()
+float ANonPlayableCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+                                        class AController* EventInstigator, AActor* DamageCauser)
 {
+	Life -= DamageAmount;
+	if (auto const AIController = Cast<ANPC_AIController>(GetController()))
+		AIController->UpdateThreatBasedOnDamage(Cast<APawn>(DamageCauser), DamageAmount);
+	else UE_LOG(LogTemp, Error, TEXT("No AI Controller found"));
+
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+}
+
+
+float ANonPlayableCharacter::GetShortestAttackRange() const
+{
+	float ShortestRange = 0.0f;
+	for (auto const Attack : Attacks)
+	{
+		if (ShortestRange == 0.0f || Attack->Range < ShortestRange)
+			ShortestRange = Attack->Range;
+	}
+	return ShortestRange; //better later set the shortest range to the first index of the array
+}
+
+void ANonPlayableCharacter::Attack(UAttackInfo* AttackInfo)
+{
+	PlayAnimMontage(AttackInfo->AttackMontage);
 }

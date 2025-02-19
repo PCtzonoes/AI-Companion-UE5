@@ -12,6 +12,8 @@ implemented in C++.
 - **Attack Modes**: Switches between melee and ranged attacks based on player input.
 - **Behavior Tree and Blackboard**: Used for controlling AI behavior.
 - **AI Controller**: Manages the AI's actions and decisions.
+- **Threat System**: Allows the AI to prioritize targets based on threat level, Companion included.
+- **Perception System**: NPCs can perceive each other using `UAIPerceptionStimuliSourceComponent`.
 
 ## Setup
 
@@ -23,12 +25,17 @@ implemented in C++.
 ### AI Controller
 
 The AI Controller (`FollowerAIController`) manages the AI's actions, including following the player and switching attack
-modes.
+modes. It uses a threat system to prioritize targets based on proximity and damage.
 
 ### Behavior Tree and Blackboard
 
 - **Behavior Tree**: Defines the AI's behavior.
 - **Blackboard**: Stores the AI's state, such as the player reference and attack type.
+
+### Perception System
+
+NPCs use `UAIPerceptionStimuliSourceComponent` to register themselves as sources of stimuli (sight and hearing) that
+other AI controllers can detect.
 
 ### Player Input
 

@@ -41,8 +41,6 @@ class COMPANION_API ANPC_AIController : public AAIController
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	class UAISenseConfig_Sight* SightConfig;
 
-	
-
 	FTimerHandle CombatTimerHandle;
 
 protected:

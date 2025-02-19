@@ -105,6 +105,11 @@ void AcompanionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	}
 }
 
+void AcompanionCharacter::Attack(UAttackInfo* AttackInfo)
+{
+	
+}
+
 void AcompanionCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
