@@ -13,4 +13,12 @@ UCLASS()
 class COMPANION_API UAttackTarget : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
+
+public:
+	UAttackTarget()
+	{
+		NodeName = TEXT("Attack Target");
+	}
+
+	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

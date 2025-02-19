@@ -3,6 +3,7 @@
 
 #include "NPC_AIController.h"
 
+#include "AttackInfo.h"
 #include "NonPlayableCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -17,7 +18,10 @@ void ANPC_AIController::OnPossess(APawn* InPawn)
 	{
 		if (auto const BehaviorTree = NPC->GetBehaviorTree())
 		{
+			auto Attacks = NPC->GetAttacks();
 			RunBehaviorTree(BehaviorTree);
+			Blackboard = GetBlackboardComponent();
+			Blackboard->SetValueAsObject("CurrentAttack", Attacks[0]);
 		}
 	}
 }
@@ -53,7 +57,6 @@ void ANPC_AIController::OnTargetAcquired(APawn* TargetPawn)
 
 	if (ICombat::IsFriendly(GetPawn(), TargetPawn))
 		return;
-	
 
 
 	UE_LOG(LogTemp, Verbose, TEXT("%s - target Acquired: %s"), *GetPawn()->GetName(), *TargetPawn->GetName());

@@ -50,19 +50,13 @@ float ANonPlayableCharacter::TakeDamage(float DamageAmount, struct FDamageEvent 
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
-
-float ANonPlayableCharacter::GetShortestAttackRange() const
-{
-	float ShortestRange = 0.0f;
-	for (auto const Attack : Attacks)
-	{
-		if (ShortestRange == 0.0f || Attack->Range < ShortestRange)
-			ShortestRange = Attack->Range;
-	}
-	return ShortestRange; //better later set the shortest range to the first index of the array
-}
-
 void ANonPlayableCharacter::Attack(UAttackInfo* AttackInfo)
 {
+	if (AttackInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Attack Info found"));
+		return;
+	}
+
 	PlayAnimMontage(AttackInfo->AttackMontage);
 }

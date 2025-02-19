@@ -15,5 +15,10 @@ class COMPANION_API UChaseTarget : public UBTTask_BlackboardBase
 	GENERATED_BODY()
 
 public:
+	UChaseTarget()
+	{
+		NodeName = TEXT("Chase Target");
+	}
+
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

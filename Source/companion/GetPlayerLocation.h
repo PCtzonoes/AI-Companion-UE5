@@ -15,5 +15,10 @@ class COMPANION_API UGetPlayerLocation : public UBTTask_BlackboardBase
 	GENERATED_BODY()
 
 public:
+	UGetPlayerLocation()
+	{
+		NodeName = TEXT("Get Player Location");
+	}
+
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

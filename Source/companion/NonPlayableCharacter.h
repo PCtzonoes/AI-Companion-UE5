@@ -8,7 +8,6 @@
 #include "GameFramework/Character.h"
 #include "NonPlayableCharacter.generated.h"
 
-class UAttackInfo;
 class UAIPerceptionStimuliSourceComponent;
 
 UCLASS()
@@ -25,7 +24,6 @@ class COMPANION_API ANonPlayableCharacter : public ACharacter, public ICombat
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
 	float Life = 100.0f;
-
 	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
 	TArray<UAttackInfo*> Attacks;
 
@@ -39,21 +37,22 @@ protected:
 
 public:
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	                         class AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
-	float GetShortestAttackRange() const;
+	virtual int32 GetTeamID() const override { return TeamID; }
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
-	virtual int32 GetTeamID() const override { return TeamID; }
+	TArray<UAttackInfo*> GetAttacks() const { return Attacks; }
 
 	UFUNCTION(Blueprintable, Category = "Combat")
 	virtual void Attack(UAttackInfo* AttackInfo) override;
