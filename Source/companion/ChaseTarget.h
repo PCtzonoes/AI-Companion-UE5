@@ -16,6 +16,8 @@ class COMPANION_API UChaseTarget : public UBTTask_BlackboardBase
 
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	float AcceptanceRadius = 25.0f;
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	float StartChaseRange = 50.0f;
 
 public:
 	UChaseTarget()

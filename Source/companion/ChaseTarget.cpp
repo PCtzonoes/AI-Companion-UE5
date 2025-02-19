@@ -17,8 +17,23 @@ EBTNodeResult::Type UChaseTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp,
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return EBTNodeResult::Failed;
 	}
+	auto const Controller = Cast<ANPC_AIController>(OwnerComp.GetAIOwner());
+	if (!Controller)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No AI Controller found"));
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return EBTNodeResult::Failed;
+	}
 
-	return EBTNodeResult::InProgress;
+	float const DistanceToTarget = FVector::Dist(Controller->GetPawn()->GetActorLocation(), Target->GetActorLocation());
+	if (DistanceToTarget > StartChaseRange)
+	{
+		return EBTNodeResult::InProgress;
+	}
+	
+	Controller->StopMovement();
+
+	return EBTNodeResult::Succeeded;
 }
 
 void UChaseTarget::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -26,9 +41,8 @@ void UChaseTarget::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 	auto const Controller = Cast<ANPC_AIController>(OwnerComp.GetAIOwner());
 	auto const Target = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()));
 	float const DistanceToTarget = FVector::Dist(Controller->GetPawn()->GetActorLocation(), Target->GetActorLocation());
-	if (DistanceToTarget <= AcceptanceRadius)
-	{
-		UE_LOG(LogTemp, Display, TEXT("Target is within stop chase range"));
+	if (DistanceToTarget <= AcceptanceRadius){
+		Controller->StopMovement();
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
