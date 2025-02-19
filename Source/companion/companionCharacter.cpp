@@ -95,6 +95,9 @@ void AcompanionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AcompanionCharacter::Look);
+
+		EnhancedInputComponent->BindAction(SwitchAttackAction, ETriggerEvent::Triggered, this,
+		                                   &AcompanionCharacter::SwitchAttack);
 	}
 	else
 	{
@@ -105,9 +108,13 @@ void AcompanionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	}
 }
 
+void AcompanionCharacter::SwitchAttack()
+{
+	OnSwitchAttack.Broadcast();
+}
+
 void AcompanionCharacter::Attack(UAttackInfo* AttackInfo)
 {
-	
 }
 
 void AcompanionCharacter::Move(const FInputActionValue& Value)

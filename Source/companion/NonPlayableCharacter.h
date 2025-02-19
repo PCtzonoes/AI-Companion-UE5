@@ -15,6 +15,7 @@ class COMPANION_API ANonPlayableCharacter : public ACharacter, public ICombat
 {
 	GENERATED_BODY()
 
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
@@ -24,7 +25,7 @@ class COMPANION_API ANonPlayableCharacter : public ACharacter, public ICombat
 
 	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
 	float Life = 100.0f;
-	UPROPERTY(EditDefaultsOnly, Category = Combat, meta = (AllowPrivate = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Combat, meta = (AllowPrivate = "true"))
 	TArray<UAttackInfo*> Attacks;
 
 public:

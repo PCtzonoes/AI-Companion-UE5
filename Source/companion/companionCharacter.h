@@ -17,6 +17,8 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwitchAttack);
+
 UCLASS(config=Game)
 class AcompanionCharacter : public ACharacter, public ICombat
 {
@@ -46,6 +48,9 @@ class AcompanionCharacter : public ACharacter, public ICombat
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SwitchAttackAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AI, meta = (AllowPrivateAccess = "true"))
 	UAIPerceptionStimuliSourceComponent* StimuliSource;
 
@@ -69,12 +74,17 @@ protected:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void SwitchAttack();
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnSwitchAttack OnSwitchAttack;
+
 	virtual int32 GetTeamID() const override { return TeamID; }
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
